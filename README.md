@@ -1,6 +1,6 @@
 # HelloID-Conn-Prov-Source-RAET-HR-CORE-Education-CSV
 
-![image](./assets/visma-raet.png)
+![image](./assets/raet.png)
 
 ## This is a work in progress
 
