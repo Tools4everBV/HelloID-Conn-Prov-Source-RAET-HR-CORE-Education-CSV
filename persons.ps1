@@ -155,20 +155,15 @@ $persons | ForEach-Object {
         $zakelijk_email = ''
         $prive_email = ''
         # all the values are in 'Telefoonnummer' attribute, using the 'type nummmer' we can determine what the value stands for
-        $meta | ForEach-Object {
-            if($_.'[Type nummer]' -eq 'CPC') {
-                $zakelijk_mobiel_nummer = $_.'[Telefoonnummer]'
-            }
-            if($_.'[Type nummer]' -eq 'WPN') {
-                $zakelijk_vast_nummer = $_.'[Telefoonnummer]'
-            }
-            if($_.'[Type nummer]' -eq 'EML') {
-                $zakelijk_email = $_.'[Telefoonnummer]'
-            }
-            if($_.'[Type nummer]' -eq 'EMP') {
-                $prive_email = $_.'[Telefoonnummer]'
+        foreach ($item in $meta) {
+            switch($item.'[Type nummer]') {
+                'CPC' { $zakelijk_mobiel_nummer = $item.'[Telefoonnummer]';break }
+                'WPN' { $zakelijk_vast_nummer = $item.'[Telefoonnummer]';break }
+                'EML' { $zakelijk_email = $item.'[Telefoonnummer]';break }
+                'EMP' { $prive_email = $item.'[Telefoonnummer]';break }
             }
         }
+
         $_.MobielWerk = $zakelijk_mobiel_nummer.Trim()
         $_.VastWerk = $zakelijk_vast_nummer.Trim()
         $_.EmailWerk = $zakelijk_email.Trim()
@@ -261,7 +256,7 @@ $persons = $persons | Select-Object ExternalId,
                                     @{Name = 'Geboortenaam';Expression= {$_.'[Eigen naam]'.Trim()}}, 
                                     @{Name = 'Geboortetussenvoegsel';Expression= {$_.'[Tussenvoegsel]'.Trim()}}, 
                                     @{Name = 'Partnernaam';Expression= {$_.Partnernaam.Trim()}}, 
-                                    @{Name = 'Partnernaamtussenvoegsel';Expression= {$_.Partnertussenvoegsel.Trim()}}, # not present, only in combined form
+                                    @{Name = 'Partnernaamtussenvoegsel';Expression= {$_.Partnertussenvoegsel.Trim()}},
                                     @{Name = 'Convention';Expression= {$_.'[Naam samenstelling]'.Trim()}}, 
                                     @{Name = 'Initialen';Expression= {$_.'[Initialen]'.Trim()}}, 
                                     @{Name = 'Geslachtcode';Expression= {$_.'[Geslacht]'.Trim()}}, 
@@ -273,7 +268,7 @@ $persons = $persons | Select-Object ExternalId,
                                     @{Name = 'BlokkerenOpnameFunctieMix';Expression= {$_.'[Blokkeren opname functiemix]'.Trim()}},
                                     Contracts
 
-# $persons = $persons | Where-Object contracts -ne $null
+# $persons = $persons | Where-Object ExternalId -eq '010074'
 
 # Export and return the json
 $json = $persons | ConvertTo-Json -Depth 10
