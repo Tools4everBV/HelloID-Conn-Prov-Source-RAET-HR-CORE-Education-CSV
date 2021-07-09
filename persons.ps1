@@ -270,7 +270,7 @@ $persons = $persons | Select-Object ExternalId,
                                     @{Name = 'BlokkerenOpnameFunctieMix';Expression= {$_.'[Blokkeren opname functiemix]'.Trim()}},
                                     Contracts
 
-$persons = $persons | Where-Object contracts -ne $null
+# $persons = $persons | Where-Object contracts -ne $null
 
 # Export and return the json
 $json = $persons | ConvertTo-Json -Depth 10
