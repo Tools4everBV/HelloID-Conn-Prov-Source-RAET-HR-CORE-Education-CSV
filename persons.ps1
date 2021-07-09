@@ -52,12 +52,15 @@ Get-SourceConnectorData -SourceFile "Functie.csv" ([ref]$professions)
 $departments = New-Object System.Collections.Generic.list[object]
 Get-SourceConnectorData -SourceFile "Eenheid.csv" ([ref]$departments)
 
-# partner stuff
 $partners | Add-Member -MemberType NoteProperty -Name "ExternalId" -Value $null -Force
+$partners | Add-Member -MemberType NoteProperty -Name "Volgnr_next" -Value $null -Force
+
 $partners | ForEach-Object {
     $_.ExternalId = $_.'[Dossiernummer]'
+    $_.Volgnr_next = $_.'[Volgend Volgnummer]'
 }
-$partners = $partners | Group-Object ExternalId -AsHashTable
+# fix for duplicate records!
+$partners = $partners | Where-Object Volgnr_next -eq '0' | Sort-Object ExternalId -unique | Group-Object ExternalId -AsHashTable
 
 # contact stuff
 $metadata | Add-Member -MemberType NoteProperty -Name "ExternalId" -Value $null -Force
@@ -163,7 +166,6 @@ $persons | ForEach-Object {
                 'EMP' { $prive_email = $item.'[Telefoonnummer]';break }
             }
         }
-
         $_.MobielWerk = $zakelijk_mobiel_nummer.Trim()
         $_.VastWerk = $zakelijk_vast_nummer.Trim()
         $_.EmailWerk = $zakelijk_email.Trim()
@@ -172,7 +174,7 @@ $persons | ForEach-Object {
 
     # Join partner stuff
     $partner = $partners[$_.ExternalId]
-    if ($null -ne $partners) {
+    if ($null -ne $partner) {
         $_.Partnernaam = $partner.'[Achternaam]'
         $_.Partnertussenvoegsel = $partner.'[Voorvoegsels]'
     }
@@ -252,11 +254,11 @@ $persons = $persons | Select-Object ExternalId,
                                     VastWerk,
                                     EmailWerk,
                                     EmailPrive,
-                                    @{Name = 'Roepnaam';Expression= {$_.'[Voornaam]'.Trim()}}, 
+                                    @{Name = 'Roepnaam';Expression= {$_.'[Roepnaam]'.Trim()}}, 
                                     @{Name = 'Geboortenaam';Expression= {$_.'[Eigen naam]'.Trim()}}, 
                                     @{Name = 'Geboortetussenvoegsel';Expression= {$_.'[Tussenvoegsel]'.Trim()}}, 
                                     @{Name = 'Partnernaam';Expression= {$_.Partnernaam.Trim()}}, 
-                                    @{Name = 'Partnernaamtussenvoegsel';Expression= {$_.Partnertussenvoegsel.Trim()}},
+                                    @{Name = 'Partnernaamtussenvoegsel';Expression= {$_.Partnertussenvoegsel.Trim()}}, # not present, only in combined form
                                     @{Name = 'Convention';Expression= {$_.'[Naam samenstelling]'.Trim()}}, 
                                     @{Name = 'Initialen';Expression= {$_.'[Initialen]'.Trim()}}, 
                                     @{Name = 'Geslachtcode';Expression= {$_.'[Geslacht]'.Trim()}}, 
@@ -268,7 +270,7 @@ $persons = $persons | Select-Object ExternalId,
                                     @{Name = 'BlokkerenOpnameFunctieMix';Expression= {$_.'[Blokkeren opname functiemix]'.Trim()}},
                                     Contracts
 
-# $persons = $persons | Where-Object ExternalId -eq '010074'
+$persons = $persons | Where-Object contracts -ne $null
 
 # Export and return the json
 $json = $persons | ConvertTo-Json -Depth 10
