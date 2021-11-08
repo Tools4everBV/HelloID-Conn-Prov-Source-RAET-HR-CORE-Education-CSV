@@ -42,10 +42,12 @@ $managerReferences = New-Object System.Collections.ArrayList
 Get-SourceConnectorData -SourceFile "Manageridentificatie.csv" ([ref]$managerReferences)
 
 $managerReferences | Add-Member -MemberType NoteProperty -Name "ExternalId" -Value $null -Force
+$managerReferences | Add-Member -MemberType NoteProperty -Name "Volgnr_next" -Value $null -Force
 $managerReferences | ForEach-Object {
     $_.ExternalId = $_.'[Dossiernummer]'
+    $_.Volgnr_next = $_.'[Volgend Volgnummer]'
 }
-$managerReferences = $managerReferences | Group-Object ExternalId -AsHashTable
+$managerReferences = $managerReferences | Where-Object Volgnr_next -eq '0' | Sort-Object ExternalId -unique | Group-Object ExternalId -AsHashTable
 
 $organizationalUnits | Add-Member -MemberType NoteProperty -Name "ExternalId" -Value $null -Force
 $organizationalUnits | Add-Member -MemberType NoteProperty -Name "DisplayName" -Value $null -Force

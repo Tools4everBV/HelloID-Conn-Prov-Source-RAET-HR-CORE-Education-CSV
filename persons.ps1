@@ -64,10 +64,12 @@ $partners = $partners | Where-Object Volgnr_next -eq '0' | Sort-Object ExternalI
 
 # contact stuff
 $metadata | Add-Member -MemberType NoteProperty -Name "ExternalId" -Value $null -Force
+$metadata | Add-Member -MemberType NoteProperty -Name "Volgnr_next" -Value $null -Force
 $metadata | ForEach-Object {
     $_.ExternalId = $_.'[Dossiernummer]'
+    $_.Volgnr_next = $_.'[Volgend Volgnummer]'
 }
-$metadata = $metadata | Group-Object ExternalId -AsHashTable
+$metadata = $metadata | Where-Object Volgnr_next -eq '0' | Group-Object ExternalId -AsHashTable
 
 # function
 $professions | Add-Member -MemberType NoteProperty -Name "ExternalId" -Value $null -Force
