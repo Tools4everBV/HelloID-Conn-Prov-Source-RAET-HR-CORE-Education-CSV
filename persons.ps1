@@ -275,7 +275,9 @@ $persons = $persons | Select-Object ExternalId,
 # $persons = $persons | Where-Object contracts -ne $null
 
 # Export and return the json
-$json = $persons | ConvertTo-Json -Depth 10
+foreach($person in $persons){
+    $json = $person | ConvertTo-Json -Depth 10
 
-Write-Output $json
+    Write-Output $json
+}
 #endregion Script
