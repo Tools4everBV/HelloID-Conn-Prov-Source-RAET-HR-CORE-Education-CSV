@@ -1,0 +1,188 @@
+{
+    "personMappings": [{
+            "name": "Contact.Business.Email",
+            "mode": "field",
+            "value": "EmailWerk",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Contact.Business.Phone.Fixed",
+            "mode": "field",
+            "value": "VastWerk",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Contact.Business.Phone.Mobile",
+            "mode": "field",
+            "value": "MobielWerk",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Details.Gender",
+            "mode": "field",
+            "value": "Geslachtomschrijving",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "ExternalId",
+            "mode": "field",
+            "value": "ExternalId",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Name.Convention",
+            "mode": "field",
+            "value": "Convention",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Name.FamilyName",
+            "mode": "field",
+            "value": "Geboortenaam",
+            "validation": {
+                "required": true
+            }
+        }, {
+            "name": "Name.FamilyNamePartner",
+            "mode": "field",
+            "value": "Partnernaam",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Name.FamilyNamePartnerPrefix",
+            "mode": "field",
+            "value": "Partnernaamtussenvoegsel",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Name.FamilyNamePrefix",
+            "mode": "field",
+            "value": "Geboortetussenvoegsel",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Name.Initials",
+            "mode": "field",
+            "value": "Initialen",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Name.NickName",
+            "mode": "field",
+            "value": "Roepnaam",
+            "validation": {
+                "required": true
+            }
+        }
+    ],
+    "contractMappings": [{
+            "name": "CostBearer.ExternalId",
+            "mode": "field",
+            "value": "Kostendragercode",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "CostBearer.Name",
+            "mode": "field",
+            "value": "Kostendrageromschrijving",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "CostCenter.ExternalId",
+            "mode": "field",
+            "value": "Kostenplaatscode",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "CostCenter.Name",
+            "mode": "field",
+            "value": "Kostenplaatsomschrijving",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Department.DisplayName",
+            "mode": "field",
+            "value": "Afdelingsomschrijving",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Department.ExternalId",
+            "mode": "field",
+            "value": "Afdelingscode",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Details.Fte",
+            "mode": "complex",
+            "value": "function calculateFTE() {\r\n    let retval = 0;\r\n\r\n    if (typeof sourceContract.IndicatieHoofdaanstelling !== 'undefined' && sourceContract.IndicatieHoofdaanstelling) {\r\n        if (sourceContract.IndicatieHoofdaanstelling === 'J') {\r\n            retval = 1;\r\n        }\r\n    }\r\n  \r\n    return retval;\r\n}\r\n\r\ncalculateFTE();",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "EndDate",
+            "mode": "field",
+            "value": "Einddatum.value",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "ExternalId",
+            "mode": "field",
+            "value": "ExternalIdVault",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "StartDate",
+            "mode": "field",
+            "value": "Begindatum.value",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Title.ExternalId",
+            "mode": "field",
+            "value": "Functiecode",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Title.Name",
+            "mode": "field",
+            "value": "Functieomschrijving",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Type.Code",
+            "mode": "field",
+            "value": "Type",
+            "validation": {
+                "required": false
+            }
+        }, {
+            "name": "Type.Description",
+            "mode": "field",
+            "value": "Typeomschrijving",
+            "validation": {
+                "required": false
+            }
+        }
+    ]
+}
